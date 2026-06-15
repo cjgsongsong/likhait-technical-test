@@ -97,6 +97,10 @@ const HistoryPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    fetchAvailableCategories();
+  }, []);
+
   const handleAddCategory = async (data: CategoryFormData) => {
     try {
       await createCategory(data);
