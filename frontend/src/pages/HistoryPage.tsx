@@ -121,6 +121,11 @@ const HistoryPage: React.FC = () => {
     gap: "24px",
   };
 
+  const rightHeaderStyle: React.CSSProperties = {
+    display: "flex",
+    gap: "12px",
+  };
+
   const titleStyle: React.CSSProperties = {
     fontSize: "40px",
     fontWeight: 700,
@@ -148,9 +153,12 @@ const HistoryPage: React.FC = () => {
             onYearChange={handleYearChange}
           />
         </div>
-        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
-          Add Expense
-        </Button>
+        <div style={rightHeaderStyle}>
+          <Button variant="primary">Add Category</Button>
+          <Button variant="primary" onClick={() => setIsModalOpen(true)}>
+            Add Expense
+          </Button>
+        </div>
       </div>
 
       <MonthNavigation
