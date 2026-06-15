@@ -3,4 +3,13 @@ class Api::CategoriesController < ApplicationController
     categories = Category.order(:name)
     render json: categories
   end
+
+  def format_category(category)
+    {
+      created_at: category.created_at,
+      id: category.id,
+      name: category.name,
+      updated_at: category.updated_at,
+    }
+  end
 end
