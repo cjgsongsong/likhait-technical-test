@@ -40,6 +40,7 @@ export function ExpenseForm({
   };
 
   const [categories, setCategories] = useState<Partial<Category>[]>([]);
+  const [isFetchingCategories, setIsFetchingCategories] = useState(true);
 
   const categoryOptions = categories.map((category: Partial<Category>) => ({
     value: category?.name || "",
@@ -52,7 +53,15 @@ export function ExpenseForm({
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setIsFetchingCategories(false);
     }
+  };
+
+  const handleSelectBoxMouseDown = (
+    e: React.MouseEvent<HTMLSelectElement, MouseEvent>,
+  ) => {
+    if (isFetchingCategories) e.preventDefault();
   };
 
   useEffect(() => {
@@ -89,7 +98,9 @@ export function ExpenseForm({
         options={categoryOptions}
         value={formData.category}
         onChange={(e) => handleChange("category", e.target.value)}
+        onMouseDown={handleSelectBoxMouseDown}
         error={errors.category}
+        disabled={isFetchingCategories}
         fullWidth
         required
       />
