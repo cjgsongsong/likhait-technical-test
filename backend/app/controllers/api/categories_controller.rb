@@ -25,7 +25,7 @@ class Api::CategoriesController < ApplicationController
       created_at: category.created_at,
       id: category.id,
       name: category.name,
-      updated_at: category.updated_at,
+      updated_at: category.updated_at
     }
   end
 end
