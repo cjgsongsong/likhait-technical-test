@@ -43,6 +43,13 @@ export interface DayExpenses {
   total: number;
 }
 
+export interface Category {
+  created_at: string;
+  id: number;
+  name: string;
+  updated_at: string;
+}
+
 export interface CategoryFormData {
   name: string;
 }
