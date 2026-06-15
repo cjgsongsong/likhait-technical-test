@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getExpenses, createExpense, createCategory } from "../services/api";
-import { CategoryFormData, Expense, ExpenseFormData } from "../types";
+import {
+  getExpenses,
+  createExpense,
+  createCategory,
+  fetchCategories,
+} from "../services/api";
+import { Category, CategoryFormData, Expense, ExpenseFormData } from "../types";
 import YearNavigation from "../components/YearNavigation";
 import { MonthNavigation } from "../components/MonthNavigation";
 import CategoryBreakdown from "../components/CategoryBreakdown";
@@ -73,6 +78,25 @@ const HistoryPage: React.FC = () => {
     updateURL(selectedYear, month);
   };
 
+  const [availableCategories, setAvailableCategories] = useState<
+    Partial<Category>[]
+  >([]);
+  const [isFetchingAvailableCategories, setIsFetchingAvailableCategories] =
+    useState(false);
+
+  const fetchAvailableCategories = async () => {
+    try {
+      setIsFetchingAvailableCategories(true);
+
+      const data = await fetchCategories();
+      setAvailableCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setIsFetchingAvailableCategories(false);
+    }
+  };
+
   const handleAddCategory = async (data: CategoryFormData) => {
     try {
       await createCategory(data);
@@ -80,6 +104,8 @@ const HistoryPage: React.FC = () => {
     } catch (error) {
       console.error("Error creating category:", error);
       throw error;
+    } finally {
+      await fetchAvailableCategories();
     }
   };
 
@@ -221,6 +247,8 @@ const HistoryPage: React.FC = () => {
         title="Add New Expense"
       >
         <ExpenseForm
+          availableCategories={availableCategories}
+          isFetchingAvailableCategories={isFetchingAvailableCategories}
           onSubmit={handleAddExpense}
           onCancel={() => setIsExpenseModalOpen(false)}
         />

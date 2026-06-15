@@ -2,21 +2,24 @@
  * Form component for adding/editing expenses
  */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Category, ExpenseFormData } from "../types";
 import { TextField, SelectBox, Button } from "../vibes";
 import { useExpenseForm } from "../hooks/useExpenseForm";
-import { fetchCategories } from "../services/api";
 
 interface ExpenseFormProps {
+  availableCategories: Partial<Category>[];
   initialData?: Partial<ExpenseFormData>;
+  isFetchingAvailableCategories: boolean;
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
 }
 
 export function ExpenseForm({
+  availableCategories,
   initialData,
+  isFetchingAvailableCategories,
   onSubmit,
   onCancel,
   submitLabel = "Add Expense",
@@ -39,34 +42,18 @@ export function ExpenseForm({
     marginTop: "0.5rem",
   };
 
-  const [categories, setCategories] = useState<Partial<Category>[]>([]);
-  const [isFetchingCategories, setIsFetchingCategories] = useState(true);
-
-  const categoryOptions = categories.map((category: Partial<Category>) => ({
-    value: category?.name || "",
-    label: category?.name || "",
-  }));
-
-  const fetchThenSetCategories = async () => {
-    try {
-      const data = await fetchCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    } finally {
-      setIsFetchingCategories(false);
-    }
-  };
+  const categoryOptions = availableCategories.map(
+    (category: Partial<Category>) => ({
+      value: category?.name || "",
+      label: category?.name || "",
+    }),
+  );
 
   const handleSelectBoxMouseDown = (
     e: React.MouseEvent<HTMLSelectElement, MouseEvent>,
   ) => {
-    if (isFetchingCategories) e.preventDefault();
+    if (isFetchingAvailableCategories) e.preventDefault();
   };
-
-  useEffect(() => {
-    fetchThenSetCategories();
-  }, []);
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
@@ -100,7 +87,7 @@ export function ExpenseForm({
         onChange={(e) => handleChange("category", e.target.value)}
         onMouseDown={handleSelectBoxMouseDown}
         error={errors.category}
-        disabled={isFetchingCategories}
+        disabled={isFetchingAvailableCategories}
         fullWidth
         required
       />
