@@ -4,6 +4,10 @@ class Api::CategoriesController < ApplicationController
     render json: categories
   end
 
+  def category_params
+    params.require(:category).permit(:name)
+  end
+
   def format_category(category)
     {
       created_at: category.created_at,
