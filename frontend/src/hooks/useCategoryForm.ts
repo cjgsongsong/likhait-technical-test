@@ -34,9 +34,13 @@ export function useCategoryForm({
   const validateForm = (): boolean => {
     const newErrors: Partial<CategoryFormData> = {};
     const trimmedName = formData?.name?.trim();
+    const NAME_PATTERN = /^[A-Z][A-Za-z0-9 ]*$/;
 
     if (!trimmedName) {
       newErrors.name = "Name is required";
+    } else if (!NAME_PATTERN.test(trimmedName)) {
+      newErrors.name =
+        "Name must start with an uppercase letter followed by zero to many alphanumeric characters and spaces";
     } else if (
       availableCategories
         ?.map((availableCategory) => availableCategory.name)
