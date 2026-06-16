@@ -2,7 +2,7 @@
  * Form component for adding/editing expenses
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { ExpenseFormData } from "../types";
 import { EXPENSE_CATEGORIES } from "../constants/categories";
 import { TextField, SelectBox, Button } from "../vibes";
@@ -27,6 +27,14 @@ export function ExpenseForm({
       onSubmit,
     });
 
+  /**
+   * @README
+   * Define current date for validation as either
+   * - current date when Expense Form is rendered, or
+   * - current date after entering a new date.
+   */
+  const [today, setToday] = useState(new Date());
+
   const formStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "column",
@@ -44,8 +52,14 @@ export function ExpenseForm({
     label: category,
   }));
 
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setToday(new Date());
+
+    handleChange("date", e.target.value);
+  };
+
   return (
-    <form onSubmit={handleSubmit} style={formStyle}>
+    <form onSubmit={(e) => handleSubmit({ e, today })} style={formStyle}>
       <TextField
         label="Amount"
         type="number"
@@ -83,7 +97,7 @@ export function ExpenseForm({
         label="Date"
         type="date"
         value={formData.date}
-        onChange={(e) => handleChange("date", e.target.value)}
+        onChange={handleDateChange}
         error={errors.date}
         fullWidth
         required
