@@ -52,7 +52,7 @@ RSpec.describe "Api::Categories", type: :request do
           post "/api/categories", params: valid_params, as: :json
         }.not_to change(Category, :count)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe "Api::Categories", type: :request do
           post "/api/categories", params: invalid_params, as: :json
         }.not_to change(Category, :count)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -83,7 +83,7 @@ RSpec.describe "Api::Categories", type: :request do
           post "/api/categories", params: invalid_params, as: :json
         }.not_to change(Category, :count)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
   end
 end
