@@ -226,6 +226,7 @@ const HistoryPage: React.FC = () => {
             />
             <div style={{ marginTop: "32px" }}>
               <CalendarExpenseTable
+                availableCategories={availableCategories}
                 expenses={expenses}
                 onExpenseUpdated={fetchExpenses}
               />
