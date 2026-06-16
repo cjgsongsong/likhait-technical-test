@@ -41,6 +41,7 @@ export function SelectBox({
     transition: "border-color 0.2s",
     backgroundColor: COLORS.background.main,
     color: COLORS.text.primary,
+    cursor: "pointer",
   };
 
   const errorStyle: React.CSSProperties = {
