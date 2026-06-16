@@ -3,12 +3,12 @@
  */
 
 import React from "react";
-import { Category, CategoryFormData } from "../types";
+import type { AvailableCategory, CategoryFormData } from "../types";
 import { Button, TextField } from "../vibes";
 import { useCategoryForm } from "../hooks/useCategoryForm";
 
 interface CategoryFormProps {
-  availableCategories: Partial<Category>[];
+  availableCategories: AvailableCategory[];
   initialData?: Partial<CategoryFormData>;
   onSubmit: (data: CategoryFormData) => Promise<void>;
   onCancel?: () => void;

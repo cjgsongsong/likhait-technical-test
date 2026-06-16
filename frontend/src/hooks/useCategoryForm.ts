@@ -3,10 +3,10 @@
  */
 
 import { useState } from "react";
-import { Category, CategoryFormData } from "../types";
+import type { AvailableCategory, CategoryFormData } from "../types";
 
 interface UseCategoryFormProps {
-  availableCategories: Partial<Category>[];
+  availableCategories: AvailableCategory[];
   initialData?: Partial<CategoryFormData>;
   onSubmit: (data: CategoryFormData) => Promise<void>;
 }

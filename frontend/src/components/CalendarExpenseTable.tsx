@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from "react";
-import { Category, Expense, ExpenseFormData } from "../types";
+import type { AvailableCategory, Expense, ExpenseFormData } from "../types";
 import { formatCurrency, formatDate } from "../utils/expenseUtils";
 import { getCategoryEmoji } from "../constants/categoryEmojis";
 import { COLORS } from "../constants/colors";
@@ -12,7 +12,7 @@ import { ExpenseForm } from "./ExpenseForm";
 import { deleteExpense, updateExpense } from "../services/api";
 
 interface CalendarExpenseTableProps {
-  availableCategories: Partial<Category>[];
+  availableCategories: AvailableCategory[];
   expenses: Expense[];
   onExpenseUpdated: () => void;
 }

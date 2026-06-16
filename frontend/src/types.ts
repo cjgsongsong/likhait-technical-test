@@ -53,3 +53,5 @@ export interface Category {
 export interface CategoryFormData {
   name: string;
 }
+
+export type AvailableCategory = Pick<Category, "name">;

@@ -5,7 +5,12 @@ import {
   createCategory,
   fetchCategories,
 } from "../services/api";
-import { Category, CategoryFormData, Expense, ExpenseFormData } from "../types";
+import type {
+  AvailableCategory,
+  CategoryFormData,
+  Expense,
+  ExpenseFormData,
+} from "../types";
 import YearNavigation from "../components/YearNavigation";
 import { MonthNavigation } from "../components/MonthNavigation";
 import CategoryBreakdown from "../components/CategoryBreakdown";
@@ -79,7 +84,7 @@ const HistoryPage: React.FC = () => {
   };
 
   const [availableCategories, setAvailableCategories] = useState<
-    Partial<Category>[]
+    AvailableCategory[]
   >([]);
   const [isFetchingAvailableCategories, setIsFetchingAvailableCategories] =
     useState(false);

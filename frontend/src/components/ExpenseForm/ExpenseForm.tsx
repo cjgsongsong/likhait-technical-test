@@ -3,12 +3,12 @@
  */
 
 import React from "react";
-import { Category, ExpenseFormData } from "../../types";
+import type { AvailableCategory, ExpenseFormData } from "../../types";
 import { TextField, SelectBox, Button } from "../../vibes";
 import { useExpenseForm } from "../../hooks/useExpenseForm";
 
 interface ExpenseFormProps {
-  availableCategories: Partial<Category>[];
+  availableCategories: AvailableCategory[];
   initialData?: Partial<ExpenseFormData>;
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
@@ -41,9 +41,9 @@ export function ExpenseForm({
   };
 
   const categoryOptions = availableCategories.map(
-    (category: Partial<Category>) => ({
-      value: category?.name || "",
-      label: category?.name || "",
+    (availableCategory: AvailableCategory) => ({
+      value: availableCategory.name,
+      label: availableCategory.name,
     }),
   );
 
