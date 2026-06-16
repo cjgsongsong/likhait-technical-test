@@ -55,5 +55,35 @@ RSpec.describe "Api::Categories", type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context "with invalid parameters" do
+      it "does not create a category given invalid name pattern" do
+        invalid_params = {
+          category: {
+            name: "_Employment"
+          }
+        }
+
+        expect {
+          post "/api/categories", params: invalid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    it "does not create a category given wrongly typed name" do
+        invalid_params = {
+          category: {
+            name: 1
+          }
+        }
+
+        expect {
+          post "/api/categories", params: invalid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
   end
 end
