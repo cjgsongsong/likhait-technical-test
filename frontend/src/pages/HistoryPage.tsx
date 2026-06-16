@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { getExpenses, createExpense } from "../services/api";
 import { Expense, ExpenseFormData } from "../types";
 import YearNavigation from "../components/YearNavigation";
@@ -102,6 +102,23 @@ const HistoryPage: React.FC = () => {
   const total = categories.reduce((sum, cat) => sum + cat.amount, 0);
   const totalCount = categories.reduce((sum, cat) => sum + cat.count, 0);
 
+  /**
+   * @README
+   * Compare the selected date with the date when this value was computed
+   * so we handle the edge case where the user changes month or year at 23:59:59.999
+   * right before the next month or year.
+   */
+  const isFutureMonth = useMemo(() => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    return (
+      selectedYear > currentYear ||
+      (selectedYear === currentYear && selectedMonth > currentMonth)
+    );
+  }, [selectedMonth, selectedYear]);
+
   const pageStyle: React.CSSProperties = {
     padding: "48px 64px",
     minHeight: "100vh",
@@ -148,7 +165,11 @@ const HistoryPage: React.FC = () => {
             onYearChange={handleYearChange}
           />
         </div>
-        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
+        <Button
+          disabled={isFutureMonth}
+          variant="primary"
+          onClick={() => setIsModalOpen(true)}
+        >
           Add Expense
         </Button>
       </div>
