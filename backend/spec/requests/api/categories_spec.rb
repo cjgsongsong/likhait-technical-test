@@ -42,6 +42,18 @@ RSpec.describe "Api::Categories", type: :request do
         json = JSON.parse(response.body)
         expect(json["name"]).to eq("Employment")
       end
+
+      it "does not create duplicate category" do
+        expect {
+          post "/api/categories", params: valid_params, as: :json
+        }.to change(Category, :count).by(1)
+
+        expect {
+          post "/api/categories", params: valid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
   end
 end
