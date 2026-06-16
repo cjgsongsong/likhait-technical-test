@@ -3,14 +3,16 @@
  */
 
 import { useState } from "react";
-import { CategoryFormData } from "../types";
+import { Category, CategoryFormData } from "../types";
 
 interface UseCategoryFormProps {
+  availableCategories: Partial<Category>[];
   initialData?: Partial<CategoryFormData>;
   onSubmit: (data: CategoryFormData) => Promise<void>;
 }
 
 export function useCategoryForm({
+  availableCategories,
   initialData,
   onSubmit,
 }: UseCategoryFormProps) {
@@ -31,9 +33,16 @@ export function useCategoryForm({
 
   const validateForm = (): boolean => {
     const newErrors: Partial<CategoryFormData> = {};
+    const trimmedName = formData?.name?.trim();
 
-    if (!formData.name.trim()) {
+    if (!trimmedName) {
       newErrors.name = "Name is required";
+    } else if (
+      availableCategories
+        ?.map((availableCategory) => availableCategory.name)
+        ?.includes(trimmedName)
+    ) {
+      newErrors.name = "Category already exists";
     }
 
     setErrors(newErrors);

@@ -240,6 +240,7 @@ const HistoryPage: React.FC = () => {
         title="Add New Category"
       >
         <CategoryForm
+          availableCategories={availableCategories}
           onSubmit={handleAddCategory}
           onCancel={() => setIsCategoryModalOpen(false)}
         />
