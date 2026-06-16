@@ -87,7 +87,7 @@ export function ExpenseForm({
         onChange={(e) => handleChange("category", e.target.value)}
         onMouseDown={handleSelectBoxMouseDown}
         error={errors.category}
-        disabled={isFetchingAvailableCategories}
+        loading={isFetchingAvailableCategories}
         fullWidth
         required
       />
