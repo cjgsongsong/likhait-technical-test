@@ -3,9 +3,9 @@
  */
 
 import React from "react";
-import { Category, ExpenseFormData } from "../types";
-import { TextField, SelectBox, Button } from "../vibes";
-import { useExpenseForm } from "../hooks/useExpenseForm";
+import { Category, ExpenseFormData } from "../../types";
+import { TextField, SelectBox, Button } from "../../vibes";
+import { useExpenseForm } from "../../hooks/useExpenseForm";
 
 interface ExpenseFormProps {
   availableCategories: Partial<Category>[];
