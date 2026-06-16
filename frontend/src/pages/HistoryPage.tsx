@@ -253,7 +253,6 @@ const HistoryPage: React.FC = () => {
       >
         <ExpenseForm
           availableCategories={availableCategories}
-          isFetchingAvailableCategories={isFetchingAvailableCategories}
           onSubmit={handleAddExpense}
           onCancel={() => setIsExpenseModalOpen(false)}
         />

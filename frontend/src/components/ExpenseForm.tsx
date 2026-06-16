@@ -10,7 +10,6 @@ import { useExpenseForm } from "../hooks/useExpenseForm";
 interface ExpenseFormProps {
   availableCategories: Partial<Category>[];
   initialData?: Partial<ExpenseFormData>;
-  isFetchingAvailableCategories: boolean;
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
@@ -19,7 +18,6 @@ interface ExpenseFormProps {
 export function ExpenseForm({
   availableCategories,
   initialData,
-  isFetchingAvailableCategories,
   onSubmit,
   onCancel,
   submitLabel = "Add Expense",
@@ -48,12 +46,6 @@ export function ExpenseForm({
       label: category?.name || "",
     }),
   );
-
-  const handleSelectBoxMouseDown = (
-    e: React.MouseEvent<HTMLSelectElement, MouseEvent>,
-  ) => {
-    if (isFetchingAvailableCategories) e.preventDefault();
-  };
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
@@ -85,9 +77,7 @@ export function ExpenseForm({
         options={categoryOptions}
         value={formData.category}
         onChange={(e) => handleChange("category", e.target.value)}
-        onMouseDown={handleSelectBoxMouseDown}
         error={errors.category}
-        loading={isFetchingAvailableCategories}
         fullWidth
         required
       />

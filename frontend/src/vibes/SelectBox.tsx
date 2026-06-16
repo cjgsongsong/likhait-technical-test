@@ -10,7 +10,6 @@ interface SelectBoxProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
   fullWidth?: boolean;
   options: Array<{ value: string; label: string }>;
-  loading: boolean;
 }
 
 export function SelectBox({
@@ -18,7 +17,6 @@ export function SelectBox({
   error,
   fullWidth = false,
   options,
-  loading,
   ...props
 }: SelectBoxProps) {
   const containerStyle: React.CSSProperties = {
@@ -42,8 +40,7 @@ export function SelectBox({
     outline: "none",
     transition: "border-color 0.2s",
     backgroundColor: COLORS.background.main,
-    color: `${loading ? COLORS.text.light : COLORS.text.primary}`,
-    cursor: `${loading ? "progress" : "pointer"}`,
+    color: COLORS.text.primary,
   };
 
   const errorStyle: React.CSSProperties = {
