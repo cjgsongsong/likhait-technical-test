@@ -215,7 +215,7 @@ const HistoryPage: React.FC = () => {
       />
 
       <div>
-        {loading ? (
+        {isFetchingAvailableCategories || loading ? (
           <div style={loadingStyle}>Loading...</div>
         ) : (
           <>
