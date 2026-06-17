@@ -7,6 +7,13 @@ const MOCK_INITIAL_DATA = { name: "Category" };
 const mockOnSubmit = vi.fn();
 const mockPreventDefault = vi.fn();
 
+let mockResolve: (value: unknown) => void = () => {};
+const mockStalledOnSubmit = mockOnSubmit.mockImplementation(() => {
+  return new Promise((resolve) => {
+    mockResolve = resolve;
+  });
+});
+
 const MOCK_FORM_EVENT = {
   preventDefault: mockPreventDefault,
 } as unknown as React.FormEvent;
@@ -174,6 +181,56 @@ describe("`useCategoryForm`", () => {
         await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
 
         expect(result.current.errors).toEqual({});
+      });
+    });
+
+    describe("`isSubmitting`", () => {
+      it("should indicate ongoing submit on validate", () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [],
+            initialData: MOCK_INITIAL_DATA,
+            onSubmit: mockStalledOnSubmit,
+          }),
+        );
+
+        expect(result.current.isSubmitting).toBe(false);
+
+        /**
+         * @README
+         * Do not refactor this as a one-liner
+         * as we want the callback to return `void` and not `handleSubmit`'s type.
+         */
+        act(() => {
+          result.current.handleSubmit(MOCK_FORM_EVENT);
+        });
+
+        expect(result.current.isSubmitting).toBe(true);
+      });
+
+      it("should indicate finished submit on resolve", async () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [],
+            initialData: MOCK_INITIAL_DATA,
+            onSubmit: mockStalledOnSubmit,
+          }),
+        );
+
+        /**
+         * @README
+         * Do not refactor this as a one-liner
+         * as we want the callback to return `void` and not `handleSubmit`'s type.
+         */
+        act(() => {
+          result.current.handleSubmit(MOCK_FORM_EVENT);
+        });
+
+        expect(result.current.isSubmitting).toBe(true);
+
+        await waitFor(() => mockResolve(null));
+
+        expect(result.current.isSubmitting).toBe(false);
       });
     });
   });
