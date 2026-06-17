@@ -233,6 +233,20 @@ describe("`useCategoryForm`", () => {
         expect(result.current.isSubmitting).toBe(false);
       });
     });
+
+    it("should submit on validate", async () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: MOCK_INITIAL_DATA,
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+      expect(mockOnSubmit).toHaveBeenCalledWith(MOCK_INITIAL_DATA);
+    });
   });
 
   describe("`resetForm`", () => {
