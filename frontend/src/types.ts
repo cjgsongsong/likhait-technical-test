@@ -42,3 +42,16 @@ export interface DayExpenses {
   expenses: Expense[];
   total: number;
 }
+
+export interface Category {
+  created_at: string;
+  id: number;
+  name: string;
+  updated_at: string;
+}
+
+export interface CategoryFormData {
+  name: string;
+}
+
+export type AvailableCategory = Pick<Category, "name">;

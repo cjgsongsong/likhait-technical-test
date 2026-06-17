@@ -22,4 +22,68 @@ RSpec.describe "Api::Categories", type: :request do
       expect(json.map { |c| c["name"] }).to eq([ "Food", "Supplies", "Transport" ])
     end
   end
+
+  describe "POST /api/categories" do
+    context "with valid parameters" do
+      let(:valid_params) do
+        {
+          category: {
+            name: "Employment"
+          }
+        }
+      end
+
+      it "creates a new category" do
+        expect {
+          post "/api/categories", params: valid_params, as: :json
+        }.to change(Category, :count).by(1)
+
+        expect(response).to have_http_status(:created)
+        json = JSON.parse(response.body)
+        expect(json["name"]).to eq("Employment")
+      end
+
+      it "does not create duplicate category" do
+        expect {
+          post "/api/categories", params: valid_params, as: :json
+        }.to change(Category, :count).by(1)
+
+        expect {
+          post "/api/categories", params: valid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+
+    context "with invalid parameters" do
+      it "does not create a category given invalid name pattern" do
+        invalid_params = {
+          category: {
+            name: "_Employment"
+          }
+        }
+
+        expect {
+          post "/api/categories", params: invalid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+
+    it "does not create a category given wrongly typed name" do
+        invalid_params = {
+          category: {
+            name: 1
+          }
+        }
+
+        expect {
+          post "/api/categories", params: invalid_params, as: :json
+        }.not_to change(Category, :count)
+
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+  end
 end
