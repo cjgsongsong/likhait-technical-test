@@ -32,4 +32,18 @@ describe("`useCategoryForm`", () => {
       expect(result.current.formData).toEqual({ name: "" });
     });
   });
+
+  describe("`errors`", () => {
+    it("should initialize as empty object", () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: {},
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      expect(result.current.errors).toEqual({});
+    });
+  });
 });
