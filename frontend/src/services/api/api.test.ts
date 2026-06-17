@@ -17,9 +17,12 @@ const MOCK_REQUEST = {
   method: "POST",
 };
 
-const mockErrorResponse = () => Response.json({}, { status: 500 });
-const mockSuccessResponse = () =>
-  Response.json(MOCK_CREATED_CATEGORY, { status: 201 });
+const mockResponse = (isSuccess: boolean): Response =>
+  Response.json(isSuccess ? MOCK_CREATED_CATEGORY : {}, {
+    status: isSuccess ? 201 : 500,
+  });
+const mockErrorResponse = () => mockResponse(false);
+const mockSuccessResponse = () => mockResponse(true);
 const spyFetch = vi.spyOn(globalThis, "fetch");
 
 describe("API", () => {
