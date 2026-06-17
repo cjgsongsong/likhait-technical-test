@@ -46,4 +46,18 @@ describe("`useCategoryForm`", () => {
       expect(result.current.errors).toEqual({});
     });
   });
+
+  describe("`isSubmitting`", () => {
+    it("should initialize as false", () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: {},
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      expect(result.current.isSubmitting).toBe(false);
+    });
+  });
 });
