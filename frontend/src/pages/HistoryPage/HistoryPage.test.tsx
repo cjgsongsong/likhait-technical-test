@@ -78,5 +78,17 @@ describe("History Page", () => {
     });
   });
 
+  describe("loading", () => {
+    it("should not render components on ongoing category fetch", () => {
+      spyFetch.mockImplementationOnce(mockSuccessResponse);
+
+      const { getByText } = render(<HistoryPage />);
+
+      const loading = getByText("Loading...");
+
+      expect(loading).toBeVisible();
+    });
+  });
+
   // ...
 });
