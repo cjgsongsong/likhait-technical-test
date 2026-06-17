@@ -3,9 +3,9 @@
  */
 
 import React from "react";
-import type { AvailableCategory, CategoryFormData } from "../types";
-import { Button, TextField } from "../vibes";
-import { useCategoryForm } from "../hooks/useCategoryForm";
+import type { AvailableCategory, CategoryFormData } from "../../types";
+import { Button, TextField } from "../../vibes";
+import { useCategoryForm } from "../../hooks/useCategoryForm";
 
 interface CategoryFormProps {
   availableCategories: AvailableCategory[];
