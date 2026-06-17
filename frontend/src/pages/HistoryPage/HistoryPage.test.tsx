@@ -1,6 +1,7 @@
 /** @README Let me assume for this technical test that I only need to test what I changed. */
 
 import { render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import HistoryPage from "./HistoryPage";
 
@@ -96,6 +97,126 @@ describe("History Page", () => {
           "Error fetching categories:",
           expect.any(Error),
         ]);
+      });
+    });
+  });
+
+  describe("dialog", () => {
+    beforeEach(() => spyFetch.mockImplementation(mockSuccessResponse));
+
+    describe("for category addition", () => {
+      it("should open category dialog on click", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        let categoryDialog = queryByText("Add New Category");
+
+        expect(categoryDialog).toBeNull();
+
+        const addCategoryButton = getByText("Add Category");
+
+        await userEvent.click(addCategoryButton);
+
+        categoryDialog = getByText("Add New Category");
+
+        expect(categoryDialog).toBeVisible();
+      });
+
+      it("should close category dialog on cancel", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        const addCategoryButton = getByText("Add Category");
+
+        await userEvent.click(addCategoryButton);
+
+        let categoryDialog: HTMLElement | null = getByText("Add New Category");
+
+        expect(categoryDialog).toBeVisible();
+
+        const cancelButton = getByText("Cancel");
+
+        await userEvent.click(cancelButton);
+
+        categoryDialog = queryByText("Add New Category");
+
+        expect(categoryDialog).toBeNull();
+      });
+
+      it("should close category dialog on close", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        const addCategoryButton = getByText("Add Category");
+
+        await userEvent.click(addCategoryButton);
+
+        let categoryDialog: HTMLElement | null = getByText("Add New Category");
+
+        expect(categoryDialog).toBeVisible();
+
+        const closeButton = getByText("\u00d7");
+
+        await userEvent.click(closeButton);
+
+        categoryDialog = queryByText("Add New Category");
+
+        expect(categoryDialog).toBeNull();
+      });
+    });
+
+    describe("for expense addition", () => {
+      it("should open expense dialog on click", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        let expenseDialog = queryByText("Add New Expense");
+
+        expect(expenseDialog).toBeNull();
+
+        const addCategoryButton = getByText("Add Expense");
+
+        await userEvent.click(addCategoryButton);
+
+        expenseDialog = getByText("Add New Expense");
+
+        expect(expenseDialog).toBeVisible();
+      });
+
+      it("should close expense dialog on cancel", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        const addExpenseButton = getByText("Add Expense");
+
+        await userEvent.click(addExpenseButton);
+
+        let expenseDialog: HTMLElement | null = getByText("Add New Expense");
+
+        expect(expenseDialog).toBeVisible();
+
+        const cancelButton = getByText("Cancel");
+
+        await userEvent.click(cancelButton);
+
+        expenseDialog = queryByText("Add New Expense");
+
+        expect(expenseDialog).toBeNull();
+      });
+
+      it("should close expense dialog on close", async () => {
+        const { getByText, queryByText } = render(<HistoryPage />);
+
+        const addExpenseButton = getByText("Add Expense");
+
+        await userEvent.click(addExpenseButton);
+
+        let expenseDialog: HTMLElement | null = getByText("Add New Expense");
+
+        expect(expenseDialog).toBeVisible();
+
+        const closeButton = getByText("\u00d7");
+
+        await userEvent.click(closeButton);
+
+        expenseDialog = queryByText("Add New Expense");
+
+        expect(expenseDialog).toBeNull();
       });
     });
   });
