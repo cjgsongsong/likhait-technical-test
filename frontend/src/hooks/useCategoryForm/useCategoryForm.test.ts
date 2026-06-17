@@ -99,4 +99,42 @@ describe("`useCategoryForm`", () => {
       expect(result.current.errors).toEqual({});
     });
   });
+
+  describe("`resetForm`", () => {
+    it("should reset form data on trigger", () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: {},
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      act(() => result.current.handleChange("name", MOCK_INITIAL_DATA.name));
+
+      expect(result.current.formData).toEqual(MOCK_INITIAL_DATA);
+
+      act(() => result.current.resetForm());
+
+      expect(result.current.formData).toEqual({ name: "" });
+    });
+
+    it("should reset errors on trigger", async () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: {},
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+      expect(result.current.errors).not.toEqual({});
+
+      act(() => result.current.resetForm());
+
+      expect(result.current.errors).toEqual({});
+    });
+  });
 });
