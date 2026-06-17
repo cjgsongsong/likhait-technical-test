@@ -4,21 +4,21 @@ import {
   createExpense,
   createCategory,
   fetchCategories,
-} from "../services/api";
+} from "../../services/api";
 import type {
   AvailableCategory,
   CategoryFormData,
   Expense,
   ExpenseFormData,
-} from "../types";
-import YearNavigation from "../components/YearNavigation";
-import { MonthNavigation } from "../components/MonthNavigation";
-import CategoryBreakdown from "../components/CategoryBreakdown";
-import { CalendarExpenseTable } from "../components/CalendarExpenseTable";
-import { CategoryForm } from "../components/CategoryForm";
-import { ExpenseForm } from "../components/ExpenseForm";
-import { Modal, Button } from "../vibes";
-import { COLORS } from "../constants/colors";
+} from "../../types";
+import YearNavigation from "../../components/YearNavigation";
+import { MonthNavigation } from "../../components/MonthNavigation";
+import CategoryBreakdown from "../../components/CategoryBreakdown";
+import { CalendarExpenseTable } from "../../components/CalendarExpenseTable";
+import { CategoryForm } from "../../components/CategoryForm";
+import { ExpenseForm } from "../../components/ExpenseForm";
+import { Modal, Button } from "../../vibes";
+import { COLORS } from "../../constants/colors";
 
 const HistoryPage: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
