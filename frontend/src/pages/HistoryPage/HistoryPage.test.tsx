@@ -1,7 +1,7 @@
 /** @README Let me assume for this technical test that I only need to test what I changed. */
 
 import { render, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import HistoryPage from "./HistoryPage";
 
 const MOCK_CATEGORIES = [
@@ -49,6 +49,28 @@ const spyFetch = vi.spyOn(globalThis, "fetch");
 
 describe("History Page", () => {
   // ...
+
+  describe("add buttons", () => {
+    beforeEach(() => spyFetch.mockImplementation(mockSuccessResponse));
+
+    it("should render enabled category addition button", () => {
+      const { getByText } = render(<HistoryPage />);
+
+      const addCategoryButton = getByText("Add Category");
+
+      expect(addCategoryButton).toBeEnabled();
+      expect(addCategoryButton).toBeVisible();
+    });
+
+    it("should render enabled expense addition button", () => {
+      const { getByText } = render(<HistoryPage />);
+
+      const addExpenseButton = getByText("Add Expense");
+
+      expect(addExpenseButton).toBeEnabled();
+      expect(addExpenseButton).toBeVisible();
+    });
+  });
 
   describe("category fetching", () => {
     it("should fetch available categories on render", async () => {
