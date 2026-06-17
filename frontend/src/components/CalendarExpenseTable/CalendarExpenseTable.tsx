@@ -3,13 +3,13 @@
  */
 
 import React, { useState } from "react";
-import type { AvailableCategory, Expense, ExpenseFormData } from "../types";
-import { formatCurrency, formatDate } from "../utils/expenseUtils";
-import { getCategoryEmoji } from "../constants/categoryEmojis";
-import { COLORS } from "../constants/colors";
-import { Button, Modal, Pagination } from "../vibes";
-import { ExpenseForm } from "./ExpenseForm";
-import { deleteExpense, updateExpense } from "../services/api";
+import type { AvailableCategory, Expense, ExpenseFormData } from "../../types";
+import { formatCurrency, formatDate } from "../../utils/expenseUtils";
+import { getCategoryEmoji } from "../../constants/categoryEmojis";
+import { COLORS } from "../../constants/colors";
+import { Button, Modal, Pagination } from "../../vibes";
+import { ExpenseForm } from "../ExpenseForm";
+import { deleteExpense, updateExpense } from "../../services/api";
 
 interface CalendarExpenseTableProps {
   availableCategories: AvailableCategory[];
