@@ -5,6 +5,7 @@ import { CategoryForm } from "../CategoryForm";
 
 const MOCK_AVAILABLE_CATEGORIES = [{ name: "Food" }];
 
+const mockOnCancel = vi.fn();
 const mockOnSubmit = vi.fn();
 
 describe("Category Form", () => {
@@ -94,6 +95,52 @@ describe("Category Form", () => {
       await userEvent.click(submitButton);
 
       expect(mockOnSubmit).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe("cancel button", () => {
+    it("should not render button", () => {
+      const { queryByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const cancelButton = queryByText("Cancel");
+
+      expect(cancelButton).toBeNull();
+    });
+
+    it("should render button given `onCancel`", () => {
+      const { getByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onCancel={mockOnCancel}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const cancelButton = getByText("Cancel");
+
+      expect(cancelButton).toBeEnabled();
+      expect(cancelButton).toBeVisible();
+    });
+
+    it("should cancel on click", async () => {
+      const { getByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onCancel={mockOnCancel}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const cancelButton = getByText("Cancel");
+
+      await userEvent.click(cancelButton);
+
+      expect(mockOnCancel).toHaveBeenCalledOnce();
     });
   });
 });
