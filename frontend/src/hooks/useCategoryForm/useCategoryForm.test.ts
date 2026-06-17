@@ -247,6 +247,21 @@ describe("`useCategoryForm`", () => {
 
       expect(mockOnSubmit).toHaveBeenCalledWith(MOCK_INITIAL_DATA);
     });
+
+    it("should reset form data and errors on submit", async () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: MOCK_INITIAL_DATA,
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+      expect(result.current.formData).toEqual({ name: "" });
+      expect(result.current.errors).toEqual({});
+    });
   });
 
   describe("`resetForm`", () => {
