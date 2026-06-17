@@ -155,12 +155,12 @@ describe("History Page", () => {
 
       await userEvent.click(submitButton);
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(spyConsoleError.mock.calls).toContainEqual([
           "Error creating category:",
           expect.any(Error),
-        ]);
-      });
+        ]),
+      );
     });
   });
 
@@ -170,12 +170,12 @@ describe("History Page", () => {
 
       render(<HistoryPage />);
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(spyFetch).toHaveBeenNthCalledWith(
           2,
           expect.stringContaining("/api/categories"),
-        );
-      });
+        ),
+      );
     });
 
     it("should throw error on fail", async () => {
@@ -183,12 +183,12 @@ describe("History Page", () => {
 
       render(<HistoryPage />);
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(spyConsoleError.mock.calls).toContainEqual([
           "Error fetching categories:",
           expect.any(Error),
-        ]);
-      });
+        ]),
+      );
     });
   });
 
