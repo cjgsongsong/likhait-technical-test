@@ -73,6 +73,67 @@ describe("History Page", () => {
     });
   });
 
+  describe("category additon", () => {
+    describe("on success", () => {
+      beforeEach(() => spyFetch.mockImplementation(mockSuccessResponse));
+
+      it("should close category dialog on submit", async () => {
+        const { getAllByText, getByText, getByPlaceholderText, queryByText } =
+          render(<HistoryPage />);
+
+        const addCategoryButton = getByText("Add Category");
+
+        await userEvent.click(addCategoryButton);
+
+        const nameField = getByPlaceholderText(
+          "Enter name",
+        ) as HTMLInputElement;
+
+        await userEvent.type(nameField, "New Category");
+
+        const submitButton = getAllByText("Add Category")[1];
+
+        await userEvent.click(submitButton);
+
+        const categoryDialog = queryByText("Add New Category");
+
+        expect(categoryDialog).toBeNull();
+      });
+
+      it("should send requests on submit", async () => {
+        const { getAllByText, getByText, getByPlaceholderText } = render(
+          <HistoryPage />,
+        );
+
+        const addCategoryButton = getByText("Add Category");
+
+        await userEvent.click(addCategoryButton);
+
+        const nameField = getByPlaceholderText(
+          "Enter name",
+        ) as HTMLInputElement;
+
+        await userEvent.type(nameField, "New Category");
+
+        const submitButton = getAllByText("Add Category")[1];
+
+        await userEvent.click(submitButton);
+
+        expect(spyFetch.mock.calls).toContainEqual(
+          expect.arrayContaining([
+            expect.stringContaining("/api/categories"),
+            expect.objectContaining({
+              method: "POST",
+            }),
+          ]),
+        );
+        expect(spyFetch.mock.lastCall).toEqual([
+          expect.stringContaining("/api/categories"),
+        ]);
+      });
+    });
+  });
+
   describe("category fetching", () => {
     it("should fetch available categories on render", async () => {
       spyFetch.mockImplementation(mockSuccessResponse);
