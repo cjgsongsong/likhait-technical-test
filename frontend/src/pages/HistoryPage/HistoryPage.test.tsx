@@ -24,13 +24,13 @@ const MOCK_EXPENSES = [
   },
 ];
 
-function mockResponse({
+const mockResponse = ({
   input,
   isSuccess,
 }: {
   input: RequestInfo | URL;
   isSuccess: boolean;
-}): Promise<Response> {
+}) => {
   const url = input instanceof Request ? input?.url : input?.toString();
 
   return Promise.resolve(
@@ -39,13 +39,11 @@ function mockResponse({
       { status: isSuccess ? 200 : 500 },
     ),
   );
-}
-function mockErrorResponse(input: RequestInfo | URL): Promise<Response> {
-  return mockResponse({ input, isSuccess: false });
-}
-function mockSuccessResponse(input: RequestInfo | URL): Promise<Response> {
-  return mockResponse({ input, isSuccess: true });
-}
+};
+const mockErrorResponse = (input: RequestInfo | URL) =>
+  mockResponse({ input, isSuccess: false });
+const mockSuccessResponse = (input: RequestInfo | URL) =>
+  mockResponse({ input, isSuccess: true });
 const spyConsoleError = vi.spyOn(console, "error");
 const spyFetch = vi.spyOn(globalThis, "fetch");
 
