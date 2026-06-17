@@ -3,7 +3,7 @@
  */
 
 import { useState } from "react";
-import type { AvailableCategory, CategoryFormData } from "../types";
+import type { AvailableCategory, CategoryFormData } from "../../types";
 
 interface UseCategoryFormProps {
   availableCategories: AvailableCategory[];
