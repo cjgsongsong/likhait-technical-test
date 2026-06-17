@@ -3,15 +3,16 @@
  */
 
 import React, { useState } from "react";
-import { Expense, ExpenseFormData } from "../types";
-import { formatCurrency, formatDate } from "../utils/expenseUtils";
-import { getCategoryEmoji } from "../constants/categoryEmojis";
-import { COLORS } from "../constants/colors";
-import { Button, Modal, Pagination } from "../vibes";
-import { ExpenseForm } from "./ExpenseForm.tsx";
-import { deleteExpense, updateExpense } from "../services/api";
+import type { AvailableCategory, Expense, ExpenseFormData } from "../../types";
+import { formatCurrency, formatDate } from "../../utils/expenseUtils";
+import { getCategoryEmoji } from "../../constants/categoryEmojis";
+import { COLORS } from "../../constants/colors";
+import { Button, Modal, Pagination } from "../../vibes";
+import { ExpenseForm } from "../ExpenseForm";
+import { deleteExpense, updateExpense } from "../../services/api";
 
 interface CalendarExpenseTableProps {
+  availableCategories: AvailableCategory[];
   expenses: Expense[];
   onExpenseUpdated: () => void;
 }
@@ -19,6 +20,7 @@ interface CalendarExpenseTableProps {
 const ITEMS_PER_PAGE = 10;
 
 export function CalendarExpenseTable({
+  availableCategories,
   expenses,
   onExpenseUpdated,
 }: CalendarExpenseTableProps) {
@@ -188,6 +190,7 @@ export function CalendarExpenseTable({
       >
         {editingExpense && (
           <ExpenseForm
+            availableCategories={availableCategories}
             initialData={{
               amount: editingExpense.amount.toString(),
               description: editingExpense.description,
