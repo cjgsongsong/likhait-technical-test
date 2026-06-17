@@ -100,6 +100,22 @@ describe("`useCategoryForm`", () => {
     });
   });
 
+  describe("`handleSubmit`", () => {
+    it("should prevent default event behavior on trigger", async () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: {},
+          onSubmit: mockOnSubmit,
+        }),
+      );
+
+      await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+      expect(mockPreventDefault).toHaveBeenCalledOnce();
+    });
+  });
+
   describe("`resetForm`", () => {
     it("should reset form data on trigger", () => {
       const { result } = renderHook(() =>
