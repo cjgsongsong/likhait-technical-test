@@ -114,6 +114,68 @@ describe("`useCategoryForm`", () => {
 
       expect(mockPreventDefault).toHaveBeenCalledOnce();
     });
+
+    describe("`validateForm`", () => {
+      it("should indicate error on submit of empty name", async () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [],
+            initialData: {},
+            onSubmit: mockOnSubmit,
+          }),
+        );
+
+        await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+        expect(result.current.errors).toEqual({ name: "Name is required" });
+      });
+
+      it("should indicate error on submit of name with invalid format", async () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [],
+            initialData: { name: " Category" },
+            onSubmit: mockOnSubmit,
+          }),
+        );
+
+        await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+        expect(result.current.errors).toEqual({
+          name: "Name must start with an uppercase letter followed by zero to many alphanumeric characters and spaces",
+        });
+      });
+
+      it("should indicate error on submit of existing name", async () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [MOCK_INITIAL_DATA],
+            initialData: MOCK_INITIAL_DATA,
+            onSubmit: mockOnSubmit,
+          }),
+        );
+
+        await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+        expect(result.current.errors).toEqual({
+          name: "Category already exists",
+        });
+      });
+
+      it("should not indicate error on submit of valid name", async () => {
+        const { result } = renderHook(() =>
+          useCategoryForm({
+            availableCategories: [],
+            initialData: MOCK_INITIAL_DATA,
+            onSubmit: mockOnSubmit,
+          }),
+        );
+
+        await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+        expect(result.current.errors).toEqual({});
+      });
+    });
   });
 
   describe("`resetForm`", () => {
