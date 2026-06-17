@@ -18,6 +18,8 @@ const MOCK_FORM_EVENT = {
   preventDefault: mockPreventDefault,
 } as unknown as React.FormEvent;
 
+const spyConsoleError = vi.spyOn(console, "error");
+
 describe("`useCategoryForm`", () => {
   describe("`formData`", () => {
     it("should initialize with initial data", () => {
@@ -261,6 +263,27 @@ describe("`useCategoryForm`", () => {
 
       expect(result.current.formData).toEqual({ name: "" });
       expect(result.current.errors).toEqual({});
+    });
+
+    it("should throw error on failed submit", async () => {
+      const { result } = renderHook(() =>
+        useCategoryForm({
+          availableCategories: [],
+          initialData: MOCK_INITIAL_DATA,
+          onSubmit: mockOnSubmit.mockRejectedValue(
+            Response.json({}, { status: 500 }),
+          ),
+        }),
+      );
+
+      await waitFor(() => result.current.handleSubmit(MOCK_FORM_EVENT));
+
+      await waitFor(() => {
+        expect(spyConsoleError.mock.calls).toContainEqual([
+          "Form submission error:",
+          expect.any(Response),
+        ]);
+      });
     });
   });
 
