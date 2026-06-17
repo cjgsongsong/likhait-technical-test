@@ -132,6 +132,36 @@ describe("History Page", () => {
         ]);
       });
     });
+
+    it("should throw error on fail", async () => {
+      spyFetch.mockImplementationOnce(mockSuccessResponse);
+      spyFetch.mockImplementationOnce(mockSuccessResponse);
+      spyFetch.mockImplementationOnce(mockErrorResponse);
+      spyFetch.mockImplementationOnce(mockSuccessResponse);
+
+      const { getAllByText, getByText, getByPlaceholderText } = render(
+        <HistoryPage />,
+      );
+
+      const addCategoryButton = getByText("Add Category");
+
+      await userEvent.click(addCategoryButton);
+
+      const nameField = getByPlaceholderText("Enter name") as HTMLInputElement;
+
+      await userEvent.type(nameField, "New Category");
+
+      const submitButton = getAllByText("Add Category")[1];
+
+      await userEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(spyConsoleError.mock.calls).toContainEqual([
+          "Error creating category:",
+          expect.any(Error),
+        ]);
+      });
+    });
   });
 
   describe("category fetching", () => {
