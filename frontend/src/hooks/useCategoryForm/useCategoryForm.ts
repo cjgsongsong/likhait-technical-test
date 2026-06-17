@@ -38,7 +38,7 @@ export function useCategoryForm({
 
     if (!trimmedName) {
       newErrors.name = "Name is required";
-    } else if (!NAME_PATTERN.test(formData?.name ?? "")) {
+    } else if (!NAME_PATTERN.test(formData?.name)) {
       newErrors.name =
         "Name must start with an uppercase letter followed by zero to many alphanumeric characters and spaces";
     } else if (
