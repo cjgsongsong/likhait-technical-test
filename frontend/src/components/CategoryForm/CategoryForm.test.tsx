@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { CategoryForm } from "../CategoryForm";
@@ -37,6 +37,63 @@ describe("Category Form", () => {
       await userEvent.type(field, "Category");
 
       expect(field.value).toBe("Category");
+    });
+  });
+
+  describe("submit button", () => {
+    it("should render enabled button", () => {
+      const { getByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const submitButton = getByText("Add Category");
+
+      expect(submitButton).toBeEnabled();
+      expect(submitButton).toBeVisible();
+    });
+
+    it("should disable button on ongoing submit", async () => {
+      const { getByPlaceholderText, getByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const field = getByPlaceholderText("Enter name") as HTMLInputElement;
+
+      await userEvent.type(field, "Category");
+
+      const submitButton = getByText("Add Category");
+
+      fireEvent.click(submitButton);
+
+      await waitFor(() => {
+        expect(submitButton).toHaveTextContent("Submitting...");
+        expect(submitButton).toBeDisabled();
+      });
+    });
+
+    it("should submit on click", async () => {
+      const { getByPlaceholderText, getByText } = render(
+        <CategoryForm
+          availableCategories={MOCK_AVAILABLE_CATEGORIES}
+          onSubmit={mockOnSubmit}
+        />,
+      );
+
+      const field = getByPlaceholderText("Enter name") as HTMLInputElement;
+
+      await userEvent.type(field, "Category");
+
+      const submitButton = getByText("Add Category");
+
+      await userEvent.click(submitButton);
+
+      expect(mockOnSubmit).toHaveBeenCalledOnce();
     });
   });
 });
